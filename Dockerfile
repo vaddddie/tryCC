@@ -5,12 +5,9 @@ FROM python:3.9-slim
 RUN apt-get update && apt-get install -y \
     build-essential \
     libgl1-mesa-glx \
+    libglib2.0-0 \
+    libglib2.0-dev \
     && rm -rf /var/lib/apt/lists/*
-
-# Необходимые системные библиотеки, а именно из пакета GTK (glib)
-# Для Debain
-RUN apt-get install libglib2.0-0
-RUN apt-get install libglib2.0-dev
 
 # Создаём рабочую директорию
 WORKDIR /app
