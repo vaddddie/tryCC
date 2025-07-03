@@ -7,6 +7,11 @@ RUN apt-get update && apt-get install -y \
     libgl1-mesa-glx \
     && rm -rf /var/lib/apt/lists/*
 
+# Необходимые системные библиотеки, а именно из пакета GTK (glib)
+# Для Debain
+RUN sudo apt install libglib2.0-0
+RUN sudo apt install libglib2.0-dev
+
 # Создаём рабочую директорию
 WORKDIR /app
 
