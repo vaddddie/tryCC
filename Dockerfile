@@ -9,8 +9,8 @@ RUN apt-get update && apt-get install -y \
 
 # Необходимые системные библиотеки, а именно из пакета GTK (glib)
 # Для Debain
-RUN sudo apt install libglib2.0-0
-RUN sudo apt install libglib2.0-dev
+RUN apt install libglib2.0-0
+RUN apt install libglib2.0-dev
 
 # Создаём рабочую директорию
 WORKDIR /app
