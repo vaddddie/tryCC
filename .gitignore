@@ -1,0 +1,64 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pycache/
+*.env
+.env/
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+env/
+
+# VSCode
+.vscode/
+
+# MacOS
+.DS_Store
+
+# Logs
+*.log
+
+# Docker
+*.dockerignore
+docker-compose.override.yml
+
+# Python packaging
+*.egg-info/
+dist/
+build/
+
+# IDEs
+.idea/
+*.iml
+
+# Static files cache or uploads (если есть)
+static/uploads/
+static/cache/
+
+# Environment variables files
+.env.local
+.env.production
+.env.test
+
+# Jupyter Notebook checkpoints (если используешь)
+.ipynb_checkpoints/
+
+# Node modules (если есть frontend с npm)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Coverage reports
+htmlcov/
+.coverage
+
+# PyCharm
+.idea/
+
+# Temporary files
+*.swp
+*.swo

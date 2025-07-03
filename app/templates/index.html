@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Hair Color Changer RGBA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f2f2f2;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        video, img {
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            width: 320px;
+            height: 240px;
+            object-fit: cover;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="range"] {
+            width: 320px;
+            margin-bottom: 15px;
+        }
+        .sliders {
+            max-width: 350px;
+            margin: 0 auto 30px auto;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Изменение цвета волос в реальном времени (RGBA)</h1>
+
+<div class="container">
+    <div>
+        <label>Оригинальное видео</label>
+        <video id="video" autoplay playsinline></video>
+    </div>
+    <div>
+        <label>Обработанное изображение</label>
+        <img id="output" />
+    </div>
+</div>
+
+<div class="sliders">
+    <label for="rRange">Красный (R)</label>
+    <input type="range" id="rRange" min="0" max="255" value="0" />
+
+    <label for="gRange">Зелёный (G)</label>
+    <input type="range" id="gRange" min="0" max="255" value="0" />
+
+    <label for="bRange">Синий (B)</label>
+    <input type="range" id="bRange" min="0" max="255" value="0" />
+</div>
+
+<canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const output = document.getElementById('output');
+    const ctx = canvas.getContext('2d');
+
+    const rRange = document.getElementById('rRange');
+    const gRange = document.getElementById('gRange');
+    const bRange = document.getElementById('bRange');
+
+    navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+        video.srcObject = stream;
+    }).catch(console.error);
+
+    const ws = new WebSocket(`ws://${location.host}/ws`);
+
+    ws.onopen = () => {
+        console.log("WebSocket connected");
+    };
+
+    ws.onmessage = (event) => {
+        output.src = event.data;
+    };
+
+    ws.onclose = () => {
+        console.log("WebSocket disconnected");
+    };
+
+    video.addEventListener('play', () => {
+        const sendFrame = () => {
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            canvas.toBlob(blob => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    const dataToSend = JSON.stringify({
+                        image: reader.result,
+                        r: parseInt(rRange.value),
+                        g: parseInt(gRange.value),
+                        b: parseInt(bRange.value),
+                    });
+                    ws.send(dataToSend);
+                };
+                reader.readAsDataURL(blob);
+            }, 'image/png');
+
+            setTimeout(sendFrame, 100);
+        };
+        sendFrame();
+    });
+</script>
+
+</body>
+</html>
