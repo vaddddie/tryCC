@@ -35,9 +35,6 @@ build/
 .idea/
 *.iml
 
-# Static files cache or uploads (если есть)
-static/*
-
 # Environment variables files
 .env.local
 .env.production
