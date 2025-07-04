@@ -36,8 +36,7 @@ build/
 *.iml
 
 # Static files cache or uploads (если есть)
-static/uploads/
-static/cache/
+static/*
 
 # Environment variables files
 .env.local
